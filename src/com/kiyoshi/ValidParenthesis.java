@@ -30,6 +30,10 @@ Output: false
 Example 5:
 Input: "{[]}"
 Output: true
+
+Example 6:
+Input: "["
+Output: true
 */
 
 import java.util.Stack;
@@ -63,6 +67,14 @@ public class ValidParenthesis {
         input = ")";
         System.out.println(isValid(input));
         // false
+
+        input = "[";
+        System.out.println(isValid(input));
+        // false
+
+        input = "[]}";
+        System.out.println(isValid(input));
+        // false
     }
 
     public static boolean isValid(String input){
@@ -77,17 +89,15 @@ public class ValidParenthesis {
         for(int i = 0; i < input.length(); i++){
             if(input.charAt(i) == '(' || input.charAt(i) == '[' || input.charAt(i) == '{'){
                 stack.push(input.charAt(i));
-            } else if(input.charAt(i) == ')' && stack.peek() == '('){
+            } else if(input.charAt(i) == ')' && !stack.isEmpty() && stack.peek() == '(' ||
+                    input.charAt(i) == ']' && !stack.isEmpty() && stack.peek() == '[' ||
+                    input.charAt(i) == '}' && !stack.isEmpty() && stack.peek() == '{'){
                 stack.pop();
-            } else if(input.charAt(i) == ']' && stack.peek() == '['){
-                stack.pop();
-            } else if(input.charAt(i) == '}' && stack.peek() == '{'){
-                stack.pop();
-            } else {
+            }  else {
                 return false;
             }
         }
 
-        return true;
+        return stack.isEmpty() ? true : false;
     }
 }
